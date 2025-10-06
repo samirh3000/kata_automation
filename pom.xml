@@ -8,13 +8,10 @@
   <version>1.0.0</version>
   <packaging>pom</packaging>
   <name>OrangeHRM Automation - Maven Multi Module</name>
-
   <modules>
     <module>ui-automation</module>
     <module>api-automation</module>
-    <module>performance-testing</module>
   </modules>
-
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -22,7 +19,6 @@
     <allure.version>2.25.0</allure.version>
     <surefire.version>3.2.5</surefire.version>
   </properties>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -44,7 +40,6 @@
       </plugins>
     </pluginManagement>
   </build>
-
   <dependencyManagement>
     <dependencies>
       <dependency>

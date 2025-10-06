@@ -1,5 +1,6 @@
 package com.orangehrm.pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,7 +18,7 @@ public class PimPage extends BasePage {
     private final By toast = By.cssSelector(".oxd-toast--success");
     private final By titleName = By.xpath("//div[@class=\"orangehrm-edit-employee-name\"]");
 
-
+    @Step("Fill add Employee")
     public void addEmployee(String fName, String lName, String photoPath) {
         waitForPageToLoad(60);
         click(menuPIM);

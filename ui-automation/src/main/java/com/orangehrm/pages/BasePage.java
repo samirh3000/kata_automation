@@ -34,13 +34,7 @@ public abstract class BasePage {
     protected String getText(By locator) {
         return waitForVisibility(locator).getText();
     }
-    protected boolean isVisible(By locator) {
-        try {
-            return waitForVisibility(locator).isDisplayed();
-        } catch (TimeoutException e) {
-            return false;
-        }
-    }
+
     public void openUrl(String url) {
         driver.get(url);
     }

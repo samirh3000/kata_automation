@@ -18,7 +18,6 @@ public class DirectoryPage extends BasePage {
     private final By titleCard = By.xpath("//div[@class=\"orangehrm-corporate-directory-sidebar\"]//p[contains(@class, 'orangehrm-directory-card-header')]");
 
 
-
     @Step("search Employee")
     public void searchEmployee(String fName,String lName) throws IOException {
         SoftAssert softAssert = new SoftAssert();
