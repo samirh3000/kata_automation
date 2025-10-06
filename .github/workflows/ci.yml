@@ -10,6 +10,7 @@ on:
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
+    environment: KEY_PACKAGE
 
     steps:
       # 1️⃣ Clonar el código fuente
