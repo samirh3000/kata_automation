@@ -1,0 +1,80 @@
+name: CI - UI Automation Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+
+jobs:
+  ui-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar el código fuente
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configurar Java (versión 17)
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3️⃣ Cachear dependencias de Maven
+      - name: Cache de dependencias Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      # 4️⃣ Construir el módulo de UI (sin ejecutar tests)
+      - name: Construir proyecto UI
+        run: mvn -B -pl ui-automation clean install -DskipTests
+
+      # 5️⃣ Ejecutar pruebas UI con Maven (BrowserStack)
+      - name: Run tests on BrowserStack
+        run: mvn -B -pl ui-automation test -DuseBrowserStack=true
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        continue-on-error: true  # 🔸 Permite continuar aunque fallen los tests
+
+      # 6️⃣ Generar reporte HTML de Allure
+      - name: Generar reporte HTML de Allure
+        if: always()
+        run: |
+          npm install -g allure-commandline --no-fund --no-audit
+          allure generate ui-automation/target/allure-results --clean -o ui-automation/target/allure-report
+
+      # 7️⃣ Subir resultados crudos de Allure (.json, etc.)
+      - name: Subir resultados Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: ui-automation/target/allure-results/
+
+      # 8️⃣ Subir reporte HTML completo de Allure
+      - name: Subir reporte HTML Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-ui
+          path: ui-automation/target/allure-report/
+
+      - name: Generar reporte HTML Surefire
+        if: always()
+        run: mvn -B -pl ui-automation surefire-report:report
+
+      - name: Subir reporte HTML Surefire
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-report
+          path: ui-automation/target/site
+

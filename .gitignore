@@ -1,0 +1,28 @@
+# 🧪 Allure (en cualquier nivel del proyecto)
+**/.allure/
+**/allure-results/
+**/allure-report/
+**/allure-history/
+**/allure-2.*/
+**/allure-commandline*/
+**/*.zip
+**/*.html
+
+# 🧰 IDEs
+.idea/
+.vscode/
+*.iml
+
+# 🧩 Maven
+target/
+surefire-reports/
+test-output/
+logs/
+
+# ⚙️ Node (por si hay frontend)
+node_modules/
+
+# 🧠 OS y temporales
+.DS_Store
+Thumbs.db
+.env
