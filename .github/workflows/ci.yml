@@ -37,8 +37,8 @@ jobs:
         run: mvn -B -pl ui-automation clean install -DskipTests
 
       # 5️⃣ Ejecutar pruebas UI con Maven
-      - name: Ejecutar pruebas UI
-        run: mvn -B -pl ui-automation test
+      - name: Run tests on BrowserStack
+        run: mvn -B -pl ui-automation test -DuseBrowserStack=true
 
       # 6️⃣ Generar reporte Allure
       - name: Generar reporte Allure
