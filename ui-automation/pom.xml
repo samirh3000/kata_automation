@@ -77,7 +77,6 @@
                 <resultsDirectory>allure-results</resultsDirectory>
             </configuration>
         </plugin>
-
     </plugins>
   </build>
 </project>
