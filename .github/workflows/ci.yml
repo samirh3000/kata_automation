@@ -40,36 +40,28 @@ jobs:
       - name: Run tests on BrowserStack
         run: mvn -B -pl ui-automation test -DuseBrowserStack=true
         continue-on-error: true  # 🔸 Permite que el flujo continúe aunque los tests fallen
-
       # 6️⃣ Generar reporte Allure
       - name: Generar reporte Allure
         run: |
           cd ui-automation
-          mkdir -p target/allure-report
-          mvn allure:report
+          echo "📦 Contenido de allure-results:"
+          ls -R allure-results || echo "⚠️ No hay resultados"
+          mvn io.qameta.allure:allure-maven:report -Dallure.results.directory=allure-results
           echo "✅ Reporte Allure generado correctamente"
         continue-on-error: true
 
-      # 7️⃣ Subir resultados de pruebas (Surefire XMLs)
-      - name: Subir resultados Surefire
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: surefire-reports
-          path: ui-automation/target/surefire-reports/
-
-      # 8️⃣ Subir resultados de Allure (raw data)
+      # 8️⃣ Subir resultados Allure
       - name: Subir resultados Allure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: ui-automation/target/allure-results/
+          path: ui-automation/allure-results/
 
-      # 9️⃣ Subir reporte HTML de Allure (para abrir con index.html)
+      # 9️⃣ Subir reporte HTML Allure
       - name: Subir reporte Allure HTML
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-ui
-          path: ui-automation/target/site/allure-maven-plugin/
+          path: ui-automation/target/site/allure-maven-plugin/**
