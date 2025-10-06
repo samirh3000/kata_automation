@@ -21,7 +21,9 @@
 package com.orangehrm.core;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
@@ -37,6 +39,19 @@ public class BaseTest {
 
     @BeforeMethod
     public void setUp() throws Exception {
+        // Verificar si usar BrowserStack o ejecución local
+        String useBrowserStack = System.getProperty("useBrowserStack", "true");
+
+        if ("true".equalsIgnoreCase(useBrowserStack)) {
+            // Configuración para BrowserStack
+            setupBrowserStack();
+        } else {
+            // Configuración local
+            setupLocalBrowser();
+        }
+    }
+
+    private void setupBrowserStack() throws Exception {
         // Cargar variables de entorno desde .env
         Dotenv dotenv = Dotenv.configure()
                 .ignoreIfMissing()
@@ -54,8 +69,11 @@ public class BaseTest {
         }
 
         // Imprimir para debug (comentar en producción)
+        System.out.println("=== BROWSERSTACK DEBUG ===");
         System.out.println("Username cargado: " + username);
         System.out.println("AccessKey cargado: " + (accessKey != null ? "****" + accessKey.substring(accessKey.length() - 4) : "null"));
+        System.out.println("Verifica tus credenciales en: https://www.browserstack.com/accounts/settings");
+        System.out.println("========================");
 
         // Configurar capabilities con formato actualizado W3C
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -78,6 +96,23 @@ public class BaseTest {
 
         // Inicializar RemoteWebDriver
         driver = new RemoteWebDriver(new URL(hubUrl), capabilities);
+        driver.manage().window().maximize();
+    }
+
+    private void setupLocalBrowser() {
+        // Configuración para ejecución local con ChromeDriver
+        String browser = System.getProperty("browser", "chrome");
+
+        System.out.println("=== EJECUCIÓN LOCAL ===");
+        System.out.println("Navegador: " + browser);
+        System.out.println("=====================");
+
+        if ("chrome".equalsIgnoreCase(browser)) {
+            WebDriverManager.chromedriver().setup();
+            driver = new ChromeDriver();
+        }
+        // Puedes agregar más navegadores aquí
+
         driver.manage().window().maximize();
     }
 

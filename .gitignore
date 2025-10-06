@@ -1,0 +1,100 @@
+# =====================================
+# 🧱 Compilación y dependencias (Maven)
+# =====================================
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# ======================
+# 🧪 Reportes y resultados
+# ======================
+allure-results/
+allure-report/
+surefire-reports/
+test-output/
+logs/
+*.log
+*.tmp
+
+# ======================
+# 🔐 Archivos sensibles
+# ======================
+.env
+*.key
+*.pem
+*.p12
+*.crt
+*.jks
+tokens/
+credentials/
+secrets.json
+
+# ======================
+# 🧠 Archivos del IDE
+# ======================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+out/
+# Eclipse
+.classpath
+.project
+.settings/
+
+# ======================
+# 🪟 Archivos de sistema
+# ======================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+*.swp
+*.swo
+.tmp
+.cache/
+
+# ======================
+# 🧩 Node / Frontend opcional
+# ======================
+node_modules/
+package-lock.json
+dist/
+build/
+
+# ======================
+# 🧰 Python o scripts auxiliares
+# ======================
+venv/
+__pycache__/
+*.pyc
+
+# ======================
+# 💻 Archivos de entorno y configuración
+# ======================
+*.bat
+*.sh
+*.cmd
+*.ps1
+*.properties
+local.properties
+
+# ======================
+# 🧾 Archivos específicos del proyecto
+# ======================
+/ui-automation/target/
+/api-automation/target/
+/ui-automation/.env
+/api-automation/.env

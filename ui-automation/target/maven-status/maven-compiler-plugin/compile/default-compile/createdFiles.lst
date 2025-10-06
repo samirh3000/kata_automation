@@ -1,6 +1,0 @@
-com\orangehrm\core\DriverFactory.class
-com\orangehrm\pages\BasePage.class
-com\orangehrm\core\BaseTest.class
-com\orangehrm\pages\LoginPage.class
-com\orangehrm\pages\PimPage.class
-com\orangehrm\pages\DirectoryPage.class
