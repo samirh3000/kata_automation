@@ -37,7 +37,10 @@ public class DriverFactory {
 
 
             options.setCapability("bstack:options", bstackOptions);
+            System.out.println("🌐 Conectando a BrowserStack HUB: " + HUB_URL);
+            System.out.println("🌐 Conectando a BrowserStack HUB: " + USERNAME);
 
+            System.out.println("🌐 Conectando a BrowserStack HUB: " + ACCESS_KEY);
             driver.set(new RemoteWebDriver(new URL(HUB_URL), options));
         } else {
             ChromeOptions options = new ChromeOptions();
