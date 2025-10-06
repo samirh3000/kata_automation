@@ -17,9 +17,9 @@ public class DriverFactory {
 
     private static final String HUB_URL = "https://" + USERNAME + ":" + ACCESS_KEY + "@hub-cloud.browserstack.com/wd/hub";
 
-    public static WebDriver createInstance(String browser, boolean useBrowserStack) throws Exception {
-        WebDriver driver;
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
+    public static synchronized void setDriver(String browser, boolean useBrowserStack) throws Exception {
         if (useBrowserStack) {
             ChromeOptions options = new ChromeOptions();
             options.setPlatformName("Windows 11");
@@ -28,23 +28,32 @@ public class DriverFactory {
             HashMap<String, Object> bstackOptions = new HashMap<>();
             bstackOptions.put("projectName", "OrangeHRM Automation");
             bstackOptions.put("buildName", "Build #1");
-            bstackOptions.put("sessionName", "Test ejecutado en BrowserStack");
+            bstackOptions.put("sessionName", Thread.currentThread().getName());
             bstackOptions.put("os", "Windows");
             bstackOptions.put("osVersion", "11");
             bstackOptions.put("local", "false");
             bstackOptions.put("seleniumVersion", "4.21.0");
+            options.addArguments("--start-maximized");
+
 
             options.setCapability("bstack:options", bstackOptions);
 
-            driver = new RemoteWebDriver(new URL(HUB_URL), options);
-
+            driver.set(new RemoteWebDriver(new URL(HUB_URL), options));
         } else {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--start-maximized");
-            driver = new ChromeDriver(options);
+            driver.set(new ChromeDriver(options));
         }
+    }
 
-        driver.manage().window().maximize();
-        return driver;
+    public static WebDriver getDriver() {
+        return driver.get();
+    }
+
+    public static void quitDriver() {
+        if (driver.get() != null) {
+            driver.get().quit();
+            driver.remove();
+        }
     }
 }

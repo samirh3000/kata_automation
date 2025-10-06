@@ -18,9 +18,25 @@ public class AddEmployeeTest extends BaseTest {
         String last = "Ramirez";
         String photo = Paths.get("src/test/resources/images/photo-sample.jpg").toAbsolutePath().toString();
 
-        LoginPage login = new LoginPage(driver);
-        PimPage pim = new PimPage(driver);
-        DirectoryPage directory = new DirectoryPage(driver);
+        LoginPage login = new LoginPage(getDriver());
+        PimPage pim = new PimPage(getDriver());
+        DirectoryPage directory = new DirectoryPage(getDriver());
+
+        login.loginAsAdmin();
+        pim.addEmployee(first, last, photo);
+        directory.searchEmployee(first, last);
+
+    }
+    @Test(description = "Agregar y validar empleado  2 en OrangeHRMm")
+    @Description("Login -> PIM add employee -> Directory search -> Validatee")
+    public void testAddEmployee2() throws IOException {
+        String first = "Carlos";
+        String last = "Ramirez";
+        String photo = Paths.get("src/test/resources/images/photo-sample.jpg").toAbsolutePath().toString();
+
+        LoginPage login = new LoginPage(getDriver());
+        PimPage pim = new PimPage(getDriver());
+        DirectoryPage directory = new DirectoryPage(getDriver());
 
         login.loginAsAdmin();
         pim.addEmployee(first, last, photo);

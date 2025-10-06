@@ -18,6 +18,7 @@ public class LoginPage extends BasePage {
     public void open() {
         openUrl("https://opensource-demo.orangehrmlive.com/");
     }
+
     @Step("Fill login page")
     public void loginAsAdmin() {
         open();

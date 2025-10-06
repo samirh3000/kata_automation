@@ -1,29 +1,26 @@
 package com.orangehrm.core;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 
 public class BaseTest {
 
-    protected WebDriver driver;
-
-    @BeforeClass
+    @BeforeMethod(alwaysRun = true)
     public void setUp() throws Exception {
         String browser = System.getProperty("browser", "chrome");
-        boolean useBrowserStack = Boolean.parseBoolean(System.getProperty("useBrowserStack", "true"));
+        boolean useBrowserStack = Boolean.parseBoolean(System.getProperty("useBrowserStack", "false"));
 
-        driver = DriverFactory.createInstance(browser, useBrowserStack);
+        DriverFactory.setDriver(browser, useBrowserStack);
     }
 
     public WebDriver getDriver() {
-        return driver;
+        return DriverFactory.getDriver();
     }
 
-    @AfterClass(alwaysRun = true)
+    @AfterMethod(alwaysRun = true)
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+        DriverFactory.quitDriver();
     }
 }
+
