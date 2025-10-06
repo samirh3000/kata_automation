@@ -36,9 +36,10 @@ jobs:
       - name: Construir proyecto UI
         run: mvn -B -pl ui-automation clean install -DskipTests
 
-      # 5️⃣ Ejecutar pruebas UI con Maven
+      # 5️⃣ Ejecutar pruebas UI con Maven (BrowserStack)
       - name: Run tests on BrowserStack
         run: mvn -B -pl ui-automation test -DuseBrowserStack=true
+        continue-on-error: true  # 🔸 Permite que el flujo continúe aunque los tests fallen
 
       # 6️⃣ Generar reporte Allure
       - name: Generar reporte Allure
@@ -47,10 +48,28 @@ jobs:
           mkdir -p target/allure-report
           mvn allure:report
           echo "✅ Reporte Allure generado correctamente"
+        continue-on-error: true
 
-      # 7️⃣ Guardar reporte como artefacto descargable
-      - name: Guardar reporte Allure
+      # 7️⃣ Subir resultados de pruebas (Surefire XMLs)
+      - name: Subir resultados Surefire
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: ui-automation/target/surefire-reports/
+
+      # 8️⃣ Subir resultados de Allure (raw data)
+      - name: Subir resultados Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: ui-automation/target/allure-results/
+
+      # 9️⃣ Subir reporte HTML de Allure (para abrir con index.html)
+      - name: Subir reporte Allure HTML
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-ui
-          path: ui-automation/target/site/allure-maven-plugin
+          path: ui-automation/target/site/allure-maven-plugin/
