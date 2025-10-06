@@ -11,9 +11,9 @@ public class BaseTest {
     @BeforeClass
     public void setUp() throws Exception {
         String browser = System.getProperty("browser", "chrome");
-        boolean useBrowserStack = Boolean.parseBoolean(System.getProperty("useBrowserStack", "True"));
+        boolean useBrowserStack = Boolean.parseBoolean(System.getProperty("useBrowserStack", "true"));
 
-        driver = DriverFactory.createInstance(browser, false);
+        driver = DriverFactory.createInstance(browser, useBrowserStack);
     }
 
     public WebDriver getDriver() {
