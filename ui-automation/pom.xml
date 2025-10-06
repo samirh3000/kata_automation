@@ -1,0 +1,80 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.orangehrm</groupId>
+    <artifactId>orangehrm-automation</artifactId>
+    <version>1.0.0</version>
+  </parent>
+
+  <artifactId>ui-automation</artifactId>
+  <name>UI Automation (Selenium + TestNG + Allure)</name>
+  <properties>
+    <selenium.version>4.23.1</selenium.version>
+    <testng.version>7.10.2</testng.version>
+    <webdrivermanager.version>5.9.2</webdrivermanager.version>
+  </properties>
+
+  <dependencies>
+      <dependency>
+          <groupId>org.seleniumhq.selenium</groupId>
+          <artifactId>selenium-java</artifactId>
+          <version>4.21.0</version>
+      </dependency>
+      <dependency>
+          <groupId>io.github.bonigarcia</groupId>
+          <artifactId>webdrivermanager</artifactId>
+          <version>5.9.2</version>
+      </dependency>
+      <dependency>
+          <groupId>ru.yandex.qatools.ashot</groupId>
+          <artifactId>ashot</artifactId>
+          <version>1.5.4</version>
+      </dependency>
+      <dependency>
+          <groupId>org.testng</groupId>
+          <artifactId>testng</artifactId>
+          <version>7.9.0</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>io.github.cdimascio</groupId>
+          <artifactId>dotenv-java</artifactId>
+          <version>3.0.0</version>
+      </dependency>
+      <dependency>
+      <groupId>io.qameta.allure</groupId>
+      <artifactId>allure-testng</artifactId>
+          <version>2.27.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <suiteXmlFiles>
+            <suiteXmlFile>src/test/resources/suitePruebas.xml</suiteXmlFile>
+          </suiteXmlFiles>
+          <systemPropertyVariables>
+              <allure.results.directory>target/allure-results</allure.results.directory>
+              <baseUrl>https://opensource-demo.orangehrmlive.com</baseUrl>
+            <browser>chrome</browser>
+            <useBrowserStack>false</useBrowserStack>
+            <BROWSERSTACK_USERNAME>${env.BROWSERSTACK_USERNAME}</BROWSERSTACK_USERNAME>
+            <BROWSERSTACK_ACCESS_KEY>${env.BROWSERSTACK_ACCESS_KEY}</BROWSERSTACK_ACCESS_KEY>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+        <plugin>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-maven</artifactId>
+            <version>2.11.2</version>
+        </plugin>
+    </plugins>
+  </build>
+</project>
