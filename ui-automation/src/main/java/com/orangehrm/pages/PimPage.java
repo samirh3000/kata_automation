@@ -1,8 +1,12 @@
 package com.orangehrm.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 
 public class PimPage extends BasePage {
+    public PimPage(WebDriver driver) {
+        super(driver);
+    }
 
     private final By menuPIM = By.xpath("//span[text()='PIM']");
     private final By addButton = By.xpath("//button[contains(.,'Add')]");
@@ -23,6 +27,7 @@ public class PimPage extends BasePage {
         driver.findElement(fileInput).sendKeys(photoPath);
         click(saveBtn);
         waitVisible(toast);
+        attachScreenshot(driver,"Busqueda de empleado");
         waitVisible(titleName);
 
 
