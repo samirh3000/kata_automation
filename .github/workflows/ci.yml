@@ -67,15 +67,14 @@ jobs:
           name: allure-report-ui
           path: ui-automation/target/allure-report/
 
-      # 9️⃣ Generar reporte HTML de Surefire
       - name: Generar reporte HTML Surefire
         if: always()
-        run: mvn surefire-report:report-only -pl ui-automation
+        run: mvn -B -pl ui-automation surefire-report:report
 
-      # 🔟 Subir reporte HTML de Surefire
       - name: Subir reporte HTML Surefire
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: surefire-report
-          path: ui-automation/target/site/surefire-report.html
+          path: ui-automation/target/site
+
