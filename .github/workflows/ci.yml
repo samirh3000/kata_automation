@@ -39,29 +39,43 @@ jobs:
       # 5️⃣ Ejecutar pruebas UI con Maven (BrowserStack)
       - name: Run tests on BrowserStack
         run: mvn -B -pl ui-automation test -DuseBrowserStack=true
-        continue-on-error: true  # 🔸 Permite que el flujo continúe aunque los tests fallen
-      # 6️⃣ Generar reporte Allure
-      - name: Generar reporte Allure
-        run: |
-          cd ui-automation
-          echo "📦 Contenido de allure-results:"
-          ls -R allure-results || echo "⚠️ No hay resultados"
-          mvn io.qameta.allure:allure-maven:report -Dallure.results.directory=allure-results
-          echo "✅ Reporte Allure generado correctamente"
-        continue-on-error: true
+        env:
+          BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        continue-on-error: true  # 🔸 Permite continuar aunque fallen los tests
 
-      # 8️⃣ Subir resultados Allure
+      # 6️⃣ Generar reporte HTML de Allure
+      - name: Generar reporte HTML de Allure
+        if: always()
+        run: |
+          npm install -g allure-commandline --no-fund --no-audit
+          allure generate ui-automation/target/allure-results --clean -o ui-automation/target/allure-report
+
+      # 7️⃣ Subir resultados crudos de Allure (.json, etc.)
       - name: Subir resultados Allure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
-          path: ui-automation/allure-results/
+          path: ui-automation/target/allure-results/
 
-      # 9️⃣ Subir reporte HTML Allure
-      - name: Subir reporte Allure HTML
+      # 8️⃣ Subir reporte HTML completo de Allure
+      - name: Subir reporte HTML Allure
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-ui
-          path: ui-automation/target/site/allure-maven-plugin/**
+          path: ui-automation/target/allure-report/
+
+      # 9️⃣ Generar reporte HTML de Surefire
+      - name: Generar reporte HTML Surefire
+        if: always()
+        run: mvn surefire-report:report-only -pl ui-automation
+
+      # 🔟 Subir reporte HTML de Surefire
+      - name: Subir reporte HTML Surefire
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-report
+          path: ui-automation/target/site/surefire-report.html
