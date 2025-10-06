@@ -58,7 +58,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+            <suiteXmlFile>src/test/resources/suitePruebas.xml</suiteXmlFile>
           </suiteXmlFiles>
           <systemPropertyVariables>
             <baseUrl>https://opensource-demo.orangehrmlive.com</baseUrl>
